@@ -1,67 +1,71 @@
 <?php
-error_reporting(0);
 include 'dbcon.php';
 session_start();
 include 'session.php';
 
 $error = "";
 
-$quan = count($_FILES['police_document']['name']);
-$police = $quan;
-
-if($quan != 0){
-	if($quan <= 3){
-		for($i = 0;$i<$quan;$i++){
-			$ext = end(explode('.',$_FILES['police_document']['name'][$i]));
-			if($ext == "pdf" || $ext == "jpg" || $ext == "png" || $ext == "jpeg"){
-				$error .= "";
-			}else{
-				$error .="<p>The file your upload is not PDF or Images (Police Report)</p>";
+if(isset($_FILES['police_document'])){
+	$quan = count($_FILES['police_document']['name']);
+	$police = $quan;
+	if($quan != 0){
+		if($quan <= 3){
+			for($i = 0;$i<$quan;$i++){
+				$ext = end(explode('.',$_FILES['police_document']['name'][$i]));
+				if($ext == "pdf" || $ext == "jpg" || $ext == "png" || $ext == "jpeg"){
+					$error .= "";
+				}else{
+					$error .="<p>The file your upload is not PDF or Images (Police Report)</p>";
+				}
 			}
+		}else{
+			$error .="<p>Exceed maximum files upload 3 (Police Report)</p>";
 		}
 	}else{
-		$error .="<p>Exceed maximum files upload 3 (Police Report)</p>";
+		$error .= "";
 	}
-}else{
-	$error .= "";
 }
 
-$quan = count($_FILES['medical_document']['name']);
-$medical = $quan;
-if($quan != 0){
-	if($quan <= 3){
-		for($i = 0;$i<$quan;$i++){
-			$ext = end(explode('.',$_FILES['medical_document']['name'][$i]));
-			if($ext == "pdf" || $ext == "jpg" || $ext == "png" || $ext == "jpeg"){
-				$error .= "";
-			}else{
-				$error .="<p>The file your upload is not PDF or Images (Medical Report)</p>";
+if(isset($_FILES['medical_document'])){
+	$quan = count($_FILES['medical_document']['name']);
+	$medical = $quan;
+	if($quan != 0){
+		if($quan <= 3){
+			for($i = 0;$i<$quan;$i++){
+				$ext = end(explode('.',$_FILES['medical_document']['name'][$i]));
+				if($ext == "pdf" || $ext == "jpg" || $ext == "png" || $ext == "jpeg"){
+					$error .= "";
+				}else{
+					$error .="<p>The file your upload is not PDF or Images (Medical Report)</p>";
+				}
 			}
+		}else{
+			$error .="<p>Exceed maximum files upload 3 (Medical Report)</p>";
 		}
 	}else{
-		$error .="<p>Exceed maximum files upload 3 (Medical Report)</p>";
+		$error .= "";
 	}
-}else{
-	$error .= "";
 }
 
-$quan = count($_FILES['other_document']['name']);
-$other = $quan;
-if($quan != 0){
-	if($quan <= 3){
-		for($i = 0;$i<$quan;$i++){
-			$ext = end(explode('.',$_FILES['other_document']['name'][$i]));
-			if($ext == "pdf" || $ext == "jpg" || $ext == "png" || $ext == "jpeg"){
-				$error .= "";
-			}else{
-				$error .="<p>The file your upload is not PDF or Images (Other Supporting Document)</p>";
+if(isset($_FILES['other_document'])){
+	$quan = count($_FILES['other_document']['name']);
+	$other = $quan;
+	if($quan != 0){
+		if($quan <= 3){
+			for($i = 0;$i<$quan;$i++){
+				$ext = end(explode('.',$_FILES['other_document']['name'][$i]));
+				if($ext == "pdf" || $ext == "jpg" || $ext == "png" || $ext == "jpeg"){
+					$error .= "";
+				}else{
+					$error .="<p>The file your upload is not PDF or Images (Other Supporting Document)</p>";
+				}
 			}
+		}else{
+			$error .="<p>Exceed maximum files upload 3 (Other Supporting Document)</p>";
 		}
 	}else{
-		$error .="<p>Exceed maximum files upload 3 (Other Supporting Document)</p>";
+		$error .= "";
 	}
-}else{
-	$error .= "";
 }
 
 if($error == ""){
@@ -98,21 +102,21 @@ if($error == ""){
 			$result = $conn->query($sql);
 		}
 
-	if($police == 0){
+	if(!isset($police)){
 		$path1 = "";
 	}else{
+
 		for($i=0;$i<$police;$i++){
 			$a = $i+1;
 			$ext = end(explode('.',$_FILES['police_document']['name'][$i]));
 			$name = $id.'('.$a.').'.$ext;
 			$target_dir = "../evidence/police/".$name;
-			var_dump($target_dir);
 			move_uploaded_file($_FILES["police_document"]["tmp_name"][$i], $target_dir);
 			$path1 .= $target_dir."/";
 		}
 	}
 
-	if($medical == 0){
+	if(!isset($medical)){
 		$path2 = "";
 	}else{
 		for($i=0;$i<$medical;$i++){
@@ -120,13 +124,12 @@ if($error == ""){
 			$ext = end(explode('.',$_FILES['medical_document']['name'][$i]));
 			$name = $id.'('.$a.').'.$ext;
 			$target_dir = "../evidence/medical/".$name;
-			var_dump($target_dir);
 			move_uploaded_file($_FILES["medical_document"]["tmp_name"][$i], $target_dir);
 			$path2 .= $target_dir."/";
 		}
 	}
 
-	if($other == 0){
+	if(!isset($other)){
 		$path3 = "";		
 	}else{
 		for($i=0;$i<$other;$i++){
@@ -144,12 +147,10 @@ if($error == ""){
 	$sql = "INSERT INTO application (id,husband_id,wife_id,reason,police,medical,other,time_apply) VALUES ('$code','$husband','$wife','$reason','$path1','$path2','$path3','$time')"; 
 	$result = $conn->query($sql);
 
-}else{
-
 }
 
 ?>
-<html>
+<!-- <html>
 <head>
 <script src="../assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
 <script src="../assets/js/core/popper.min.js" type="text/javascript"></script>
@@ -200,4 +201,4 @@ function countDown() {
 countDown();
 
 
-</script>
+</script> -->
