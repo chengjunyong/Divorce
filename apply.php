@@ -97,7 +97,7 @@ include 'ajax/session.php';
                    <div class="tab-pane fade show active" id="reason" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="form-group">
                       <label>Please describle the reason why you apply divorce:</label>
-                      <textarea class="form-control" rows="15" name="answer" required style="height:100%"></textarea>
+                      <textarea class="form-control" rows="15" name="answer" style="height:100%"></textarea>
                     </div>
                   </div>
                   <div class="tab-pane fade" id="police" role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -144,18 +144,18 @@ include 'ajax/session.php';
 <script src="js/notify.js"></script>
 </html>
 <script>
-  $(document).ready(function(){
-   $("#check_police").change(function(){
+$(document).ready(function(){
+  $("#check_police").change(function(){
     if(this.checked){
-     $("#police_document").attr("disabled",false);
-     $("#police_document").attr("required",true);
-   }else{
-     $("#police_document").attr("disabled",true);
-     $("#police_document").attr("required",false);
-   }
- });
+      $("#police_document").attr("disabled",false);
+      $("#police_document").attr("required",true);
+    }else{
+      $("#police_document").attr("disabled",true);
+      $("#police_document").attr("required",false);
+    }
+  });
 
-   $("#check_medical").change(function(){
+  $("#check_medical").change(function(){
     if(this.checked){
      $("#medical_document").attr("disabled",false);
      $("#medical_document").attr("required",true);
@@ -165,7 +165,7 @@ include 'ajax/session.php';
    }
  });
 
-   $("#check_other").change(function(){
+  $("#check_other").change(function(){
     if(this.checked){
      $("#other_document").attr("disabled",false);
      $("#other_document").attr("required",true);
@@ -174,32 +174,97 @@ include 'ajax/session.php';
      $("#other_document").attr("required",false);
    }
  });
- });
+});
 
-  $("input[type='submit']").click(function(){
+$("input[type='submit']").click(function(){
+  let police = $("#police_document");
+  let medical = $("#medical_document");
+  let other = $("#other_document");
 
-    let police = $("#police_document");
-    let medical = $("#medical_document");
-    let other = $("#other_document");
-
-    if(parseInt(police.get(0).files.length) > 3){
-      police[0].setCustomValidity("Maximum file upload is only three (3)");
-    }else{
-      police[0].setCustomValidity("");
+  //police
+  if(parseInt(police.get(0).files.length) > 3){
+    police[0].setCustomValidity("Maximum file upload is only three (3)");
+  }else{
+    let er = true;
+    for(i=0;i<police[0].files.length;i++){
+      if(police[0].files.item(i).size > 5242880){
+        police[0].setCustomValidity("Each file cannot exceed 5MB");
+        er = false;
+      }
     }
-
-    if(parseInt(medical.get(0).files.length) > 3){
-      medical[0].setCustomValidity("Maximum file upload is only three (3)");
-    }else{
-      medical[0].setCustomValidity("");
+    if(er == true){
+      for(i=0;i<police[0].files.length;i++){
+        let type = police[0].files.item(i).type;
+        if(type == "image/png" || type == "image/jpg" || type == "image/jpeg" || type == "image/webp" || type == "image/gif" || type == "application/pdf"){
+          
+        }else{
+          er = false;
+        }
+      }
+      if(er == false){
+        police[0].setCustomValidity("Each of the file must be PDF or image");
+      }else{
+        police[0].setCustomValidity("");
+      }
     }
+  }
 
-    if(parseInt(other.get(0).files.length) > 3){
-      other[0].setCustomValidity("Maximum file upload is only three (3)");
-    }else{
-      other[0].setCustomValidity("");
+  //medical
+  if(parseInt(medical.get(0).files.length) > 3){
+    medical[0].setCustomValidity("Maximum file upload is only three (3)");
+  }else{
+    let er = true;
+    for(i=0;i<medical[0].files.length;i++){
+      if(medical[0].files.item(i).size > 5242880){
+        medical[0].setCustomValidity("Each file cannot exceed 5MB");
+        er = false;
+      }
     }
+    if(er == true){
+      for(i=0;i<medical[0].files.length;i++){
+        let type = medical[0].files.item(i).type;
+        if(type == "image/png" || type == "image/jpg" || type == "image/jpeg" || type == "image/webp" || type == "image/gif" || type == "application/pdf"){
+          
+        }else{
+          er = false;
+        }
+      }
+      if(er == false){
+        medical[0].setCustomValidity("Each of the file must be PDF or image");
+      }else{
+        medical[0].setCustomValidity("");
+      }
+    }
+  }
 
-  });
-
+  //other
+  if(parseInt(other.get(0).files.length) > 3){
+    other[0].setCustomValidity("Maximum file upload is only three (3)");
+  }else{
+    let er = true;
+    for(i=0;i<other[0].files.length;i++){
+      if(other[0].files.item(i).size > 5242880){
+        other[0].setCustomValidity("Each file cannot exceed 5MB");
+        er = false;
+      }
+    }
+    if(er == true){
+      for(i=0;i<other[0].files.length;i++){
+        let type = other[0].files.item(i).type;
+        if(type == "image/png" || type == "image/jpg" || type == "image/jpeg" || type == "image/webp" || type == "image/gif" || type == "application/pdf"){
+          
+        }else{
+          er = false;
+        }
+      }
+      if(er == false){
+        other[0].setCustomValidity("Each of the file must be PDF or image");
+      }else{
+        other[0].setCustomValidity("");
+      }
+    }
+  }
+  
+});
 </script>
+
