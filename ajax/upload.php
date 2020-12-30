@@ -1,5 +1,7 @@
 <?php
 error_reporting(0);
+$dat = getrusage();
+$time_start = microtime(true); 
 include 'dbcon.php';
 session_start();
 include 'session.php';
@@ -79,6 +81,10 @@ $reason = $_POST['answer'];
 $time = date("Y-m-d");
 $sql = "INSERT INTO application (id,husband_id,wife_id,reason,police,medical,other,time_apply) VALUES ('$code','$husband','$wife','$reason','$path1','$path2','$path3','$time')"; 
 $result = $conn->query($sql);
+
+$time_end = microtime(true);
+$execution_time = ($time_end - $time_start)/60;
+// echo '<b>Total Execution Time:</b> '.number_format((float) $execution_time, 10).' Mins';
 
 ?>
 <html>
