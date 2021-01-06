@@ -13,7 +13,7 @@ echo '<ul class="nav">
                         </a>
                     </li> 
                     <li class="nav-item"> 
-                        <a class="nav-link" href="u_children.php">
+                        <a class="nav-link" href="u_childindex.php">
                             <p>Update Children</p>
                         </a>
                     </li> 
