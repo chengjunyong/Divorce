@@ -108,7 +108,7 @@ function countDown() {
       $("#timer").text("This page will redirect in " + count + " seconds."); // Timer Message
       setTimeout("countDown()", 1000);
     } else {
-      window.location.href = "u_children.php";
+      window.location.href = "u_childindex.php";
     }
 }
 
